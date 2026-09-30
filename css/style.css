@@ -63,7 +63,8 @@ dd{margin:0;color:var(--mute)}
 footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--mute);font-size:.9rem}
 
 @media (max-width:720px){
-  .bar nav a:not(.keep){display:none}
+  .bar{flex-direction:column;align-items:flex-start;gap:12px;padding:16px 0}
+  .bar nav{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.88rem}
   .hero{grid-template-columns:1fr;padding-top:40px}
   .me{order:-1;width:112px;height:112px}
   section{grid-template-columns:1fr;gap:16px;padding:44px 0}
