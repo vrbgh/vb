@@ -1,0 +1,59 @@
+[
+  {
+    "name": "Embedded",
+    "items": [
+      "Arduino",
+      "NodeMCU ESP8266",
+      "PIC16F877A",
+      "sensors",
+      "Proteus",
+      "MPLAB"
+    ]
+  },
+  {
+    "name": "Languages",
+    "items": [
+      "C",
+      "C++",
+      "Python",
+      "Embedded C"
+    ]
+  },
+  {
+    "name": "IoT",
+    "items": [
+      "MQTT",
+      "Wi-Fi",
+      "acknowledgement logic"
+    ]
+  },
+  {
+    "name": "Machine learning",
+    "items": [
+      "Random Forest",
+      "neural networks",
+      "MFCC",
+      "PCA",
+      "model evaluation"
+    ]
+  },
+  {
+    "name": "Web",
+    "items": [
+      "Java",
+      "Spring Boot",
+      "REST APIs",
+      "MySQL",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
+    "name": "Electronics",
+    "items": [
+      "Basic VLSI",
+      "electronic components and devices"
+    ]
+  }
+]

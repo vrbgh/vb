@@ -1,0 +1,23 @@
+[
+  {
+    "id": "c1",
+    "title": "IEEE INNOVA-2024, poster presentation",
+    "date": "19 December 2024",
+    "image": "assets/images/cert-ieee-innova-2024.jpg",
+    "alt": "IEEE INNOVA-2024 poster presentation certificate"
+  },
+  {
+    "id": "c2",
+    "title": "Embedded C Programming, TRIOX Technology",
+    "date": "Oct 2024 – Mar 2025",
+    "image": "assets/images/cert-triox-embedded-c.jpg",
+    "alt": "TRIOX Technology Embedded C Programming certificate"
+  },
+  {
+    "id": "c3",
+    "title": "Full Stack Java with Web Development, The LearnHub",
+    "date": "Oct – Nov 2023",
+    "image": "assets/images/cert-learnhub-java.jpg",
+    "alt": "The LearnHub Full Stack Java certificate"
+  }
+]

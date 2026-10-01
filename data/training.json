@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Embedded C Programming",
+    "date": "Oct 2024 – Mar 2025",
+    "subtitle": "TRIOX Technology, 15 weeks",
+    "description": "Embedded C with Proteus, MPLAB and Arduino IDE. Hands-on work with NodeMCU, Arduino, microcontrollers and sensors."
+  },
+  {
+    "title": "Full Stack Java with Web Development",
+    "date": "Oct – Nov 2023",
+    "subtitle": "The LearnHub",
+    "description": "Java, Spring Boot, REST APIs, MySQL, JavaScript and Bootstrap, including website clone projects."
+  },
+  {
+    "title": "IoT and Its Application",
+    "date": "May – Jun 2023",
+    "subtitle": "BLDEA's V P Dr. P.G. Halakatti College of Engineering & Technology",
+    "description": "Designed and developed IoT-based systems and applications."
+  },
+  {
+    "title": "Electrical manufacturing",
+    "date": "May 2022",
+    "subtitle": "Anand Transmission Products Pvt. Ltd.",
+    "description": "Exposure to ACSR conductor and distribution transformer production, quality control, material handling and safety practices."
+  }
+]

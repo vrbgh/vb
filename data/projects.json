@@ -1,0 +1,19 @@
+[
+  {
+    "title": "IoT communication system for a college department",
+    "url": "https://github.com/vrbgh/mqttbcs",
+    "meta": "Team lead. NodeMCU ESP8266, MQTT, Python, Wi-Fi.",
+    "description": "A department notification system built around a single NodeMCU that runs both the MQTT broker and the Wi-Fi hotspot, so no external router is needed and IP addresses stay stable. A smart keypad adds two-way acknowledgement, so a sender knows a message arrived."
+  },
+  {
+    "title": "Acoustic environment classification",
+    "url": "https://github.com/vrbgh/dcaerfnn",
+    "meta": "Team lead. Python, Google Colab, Random Forest and neural network.",
+    "description": "Real-time classification of surrounding sound, built with MFCC feature extraction, standard scaling and PCA. Evaluated with accuracy, confusion matrix, precision, recall and F1-score. Presented at IEEE INNOVA-2024 and named Best Project of the Year at Open Day 2024–25."
+  },
+  {
+    "title": "Arduino prototypes",
+    "meta": "Arduino Uno, sensors, electronics.",
+    "description": "A density-based traffic light controller, an adaptive home lighting and heating system, and a contactless multi-position steering system with battery boosting from PV and TEG."
+  }
+]

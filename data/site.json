@@ -1,0 +1,43 @@
+{
+  "name": "Vishwanath Biradar",
+  "headline": "Building thinking machines for the physical world.",
+  "intro": "I'm Vishwanath, an electronics and communication engineer. I design embedded and IoT systems, and use machine learning to make sense of sound. Recently: a department notification network running on a single NodeMCU, and an award-winning sound classifier for hearing-impaired users.",
+  "photo": {
+    "src": "assets/images/profile.jpg",
+    "alt": "Portrait of Vishwanath Biradar"
+  },
+  "email": "1vishwanathbiradar@gmail.com",
+  "phone": {
+    "display": "+91 8431471725",
+    "href": "tel:+918431471725"
+  },
+  "links": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/vrbl/"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/vrbgh"
+    }
+  ],
+  "resume": {
+    "pdf": "assets/docs/Vishwanath_Biradar_Resume.pdf",
+    "filename": "Vishwanath_Biradar_Resume.pdf",
+    "pages": [
+      {
+        "src": "assets/images/resume-page-1.png",
+        "alt": "Resume page 1"
+      },
+      {
+        "src": "assets/images/resume-page-2.png",
+        "alt": "Resume page 2"
+      },
+      {
+        "src": "assets/images/resume-page-3.png",
+        "alt": "Resume page 3"
+      }
+    ]
+  },
+  "footer": "© 2026 Vishwanath Biradar"
+}

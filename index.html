@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- seo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<noscript><style>.wrap{opacity:1}</style></noscript>
+</head>
+<body>
+<div class="wrap">
+
+<header class="bar">
+  <strong data-f="name"></strong>
+  <nav aria-label="Primary">
+    <a href="#projects">Projects</a>
+    <a href="#training">Training</a>
+    <a href="#certificates">Certificates</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
+    <a href="#recognition">Recognition</a>
+    <a href="#contact">Contact</a>
+    <a class="keep" href="#resume">Resume</a>
+  </nav>
+</header>
+
+<main>
+<noscript><p class="err">This portfolio loads its content with JavaScript. You can still <a href="assets/docs/Vishwanath_Biradar_Resume.pdf">download the resume</a>.</p></noscript>
+
+<div class="hero" id="top">
+  <div>
+    <h1 data-f="headline"></h1>
+    <p data-f="intro"></p>
+    <div class="links" data-list="heroLinks" data-tpl="t-link"></div>
+  </div>
+  <img class="me" data-src="photo.src" data-alt="photo.alt" alt="" width="152" height="152">
+</div>
+
+<canvas class="sig" id="sig" aria-hidden="true"></canvas>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="stack" data-list="projects" data-tpl="t-project"></div>
+</section>
+
+<section id="training">
+  <h2>Training</h2>
+  <div class="stack" data-list="training" data-tpl="t-entry"></div>
+</section>
+
+<section id="certificates">
+  <h2>Certificates</h2>
+  <div class="certs" data-list="certificates" data-tpl="t-cert"></div>
+</section>
+
+<section id="education">
+  <h2>Education</h2>
+  <div class="stack" data-list="education" data-tpl="t-entry"></div>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <dl data-list="skills" data-tpl="t-skill"></dl>
+</section>
+
+<section id="recognition">
+  <h2>Recognition</h2>
+  <div class="stack" data-list="recognition" data-tpl="t-recognition"></div>
+</section>
+
+<section id="contact" class="contact">
+  <h2>Contact</h2>
+  <div>
+    <a class="big" data-href="emailHref" data-f="email"></a>
+    <ul data-list="contactLinks" data-tpl="t-li"></ul>
+  </div>
+</section>
+</main>
+
+<footer data-f="footer"></footer>
+</div>
+
+<div class="rv" id="resume" role="dialog" aria-label="Resume preview">
+  <div class="head"><span>Resume</span><div><a data-href="resume.pdf" data-download="resume.filename">Download</a><a href="#top">Close</a></div></div>
+  <div class="pages" data-list="resumePages" data-tpl="t-page"></div>
+</div>
+
+<!-- Markup for repeated items. Content is filled in from /data/*.json by js/render.js -->
+<template id="t-link"><a data-href="url" data-f="label" data-download="download" data-ext="ext"></a></template>
+<template id="t-li"><li><a data-href="url" data-f="label" data-ext="ext"></a></li></template>
+<template id="t-project"><article><h3><a data-href="url" data-f="title" target="_blank" rel="noopener"></a></h3><p class="sub" data-f="meta"></p><p data-f="description"></p></article></template>
+<template id="t-entry"><div class="entry"><h3 data-f="title"></h3><span class="date" data-f="date"></span><p class="sub" data-f="subtitle"></p><p data-f="description"></p></div></template>
+<template id="t-cert"><figure data-id="id"><a class="row" data-href="hash"><span><b data-f="title"></b><span data-f="date"></span></span><span class="v">View</span></a><img data-src="image" data-alt="alt"><figcaption data-f="caption"></figcaption><a class="x" href="#certificates">Close</a></figure></template>
+<template id="t-skill"><dt data-f="name"></dt><dd data-f="items"></dd></template>
+<template id="t-recognition"><div><h3 data-f="title"></h3><p class="sub" data-f="description"></p></div></template>
+<template id="t-page"><img data-src="src" data-alt="alt"></template>
+
+<script src="js/render.js" defer></script>
+<script src="js/signal.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "url": "https://vrbgh.github.io/vb/",
+  "title": "Vishwanath Biradar | Electronics & Communication Engineer",
+  "shareTitle": "Vishwanath Biradar | Electronics & Communication Engineer",
+  "description": "Electronics and communication engineer building embedded and IoT systems, and using machine learning to make sense of sound.",
+  "siteName": "Vishwanath Biradar",
+  "author": "Vishwanath Biradar",
+  "jobTitle": "Electronics and Communication Engineer",
+  "favicon": "assets/favicon.svg",
+  "themeColor": { "light": "#f7f8f9", "dark": "#0f1216" },
+  "image": {
+    "path": "assets/ogimage1.png",
+    "version": "",
+    "width": 1200,
+    "height": 630,
+    "alt": "Vishwanath Biradar, electronics and communication engineer."
+  }
+}
