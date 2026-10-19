@@ -57,16 +57,21 @@
 
   function render(d) {
     var site = d.site;
-    site.emailHref = 'mailto:' + site.email;
+    if (site.email) site.emailHref = 'mailto:' + site.email;
 
     var external = function (l) { return { label: l.label, url: l.url, ext: true }; };
+    var heroLinks = site.email
+      ? [{ label: 'Email', url: site.emailHref }]
+      : [];
+    var contactLinks = site.phone && site.phone.display
+      ? [{ label: site.phone.display, url: site.phone.href }]
+      : [];
     var lists = {
-      heroLinks: [{ label: 'Email', url: site.emailHref }]
-        .concat(site.links.map(external), [
+      heroLinks: heroLinks.concat(site.links.map(external), [
           { label: 'Preview resume', url: '#resume' },
           { label: 'Download resume', url: site.resume.pdf, download: site.resume.filename }
         ]),
-      contactLinks: [{ label: site.phone.display, url: site.phone.href }].concat(site.links.map(external)),
+      contactLinks: contactLinks.concat(site.links.map(external)),
       resumePages: site.resume.pages,
       projects: d.projects,
       training: d.training,
