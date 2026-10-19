@@ -6,11 +6,6 @@
     "src": "assets/images/profile.jpg",
     "alt": "Portrait of Vishwanath Biradar"
   },
-  "email": "",
-  "phone": {
-    "display": "",
-    "href": "tel:"
-  },
   "links": [
     {
       "label": "LinkedIn",
