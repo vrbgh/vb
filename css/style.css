@@ -3,14 +3,16 @@
 :root[data-theme="dark"]{--bg:#0f1216;--ink:#eef1f4;--mute:#98a2ae;--line:#232a32;--accent:#8ea2ff}
 *{box-sizing:border-box}
 :root{--serif:"Instrument Serif","Iowan Old Style",Georgia,serif}
-html{scroll-behavior:smooth;scroll-padding-top:24px}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.65 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:1px;text-underline-offset:.28em;transition:text-decoration-color .15s,color .15s}
 a:hover{color:var(--accent);text-decoration-color:currentColor}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 .wrap{width:min(920px,100% - 48px);margin-inline:auto}
 
-.bar{gap:32px;display:flex;justify-content:space-between;align-items:center;padding:24px 0;font-size:.95rem}
+.bar{position:sticky;top:0;z-index:10;gap:32px;display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-size:.95rem;background:var(--bg)}
+.bar .brand{display:inline-flex;align-items:center;padding:5px 16px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.bar .brand:hover{border-color:var(--accent);color:var(--accent)}
 .bar strong{font-family:var(--serif);font-weight:400;font-size:1.5rem;letter-spacing:-.005em}
 .bar nav{display:flex;gap:28px}
 .bar nav a{text-decoration:none;color:var(--mute)}
@@ -63,7 +65,7 @@ dd{margin:0;color:var(--mute)}
 footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--mute);font-size:.9rem}
 
 @media (max-width:720px){
-  .bar{flex-direction:column;align-items:flex-start;gap:12px;padding:16px 0}
+  .bar{flex-direction:column;align-items:flex-start;gap:12px;padding:12px 0}
   .bar nav{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.88rem}
   .hero{grid-template-columns:1fr;padding-top:40px}
   .me{order:-1;width:112px;height:112px}
