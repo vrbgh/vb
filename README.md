@@ -8,7 +8,7 @@ css/style.css       look and layout
 js/render.js        reads data/*.json and fills the page
 js/signal.js        the animated signal graphic
 data/               every word, link and file name shown on the page
-  site.json           name, headline, intro, photo, email, phone, social links, resume files, footer
+  site.json           name, headline, intro, photo, optional email and phone, social links, resume files, footer
   projects.json       projects
   training.json       training and internships
   education.json      degrees
