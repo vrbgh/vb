@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Encrypted file encoder</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 48px 20px; }
+    main { width: min(100%, 720px); margin: 0 auto; }
+    a { color: #3156c9; }
+    .eyebrow { color: #52617a; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 10px 0; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -.045em; }
+    .intro { color: #52617a; line-height: 1.65; }
+    .card { margin-top: 28px; padding: clamp(20px, 5vw, 36px); border: 1px solid #e0e5ef; border-radius: 20px; background: #fff; box-shadow: 0 16px 48px rgb(34 49 80 / 7%); }
+    label { display: block; margin: 20px 0 8px; font-size: .92rem; font-weight: 650; }
+    input { width: 100%; padding: 12px 14px; border: 1px solid #cbd3e1; border-radius: 10px; font: inherit; }
+    input:focus { border-color: #3156c9; outline: 3px solid rgb(49 86 201 / 15%); }
+    .hint, .privacy { color: #61708a; font-size: .84rem; line-height: 1.55; }
+    button { margin-top: 24px; padding: 12px 18px; border: 0; border-radius: 10px; background: #3156c9; color: #fff; cursor: pointer; font: inherit; font-weight: 700; }
+    button:disabled { cursor: wait; opacity: .65; }
+    .privacy { margin-top: 22px; padding: 14px; border-radius: 10px; background: #f3f5fa; }
+    #status { min-height: 1.5em; margin-top: 16px; color: #3156c9; }
+    #status[data-error="true"] { color: #b42318; }
+    @media (max-width: 520px) { body { padding: 30px 16px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Private file vault</p>
+    <h1>Encrypt files for the web</h1>
+    <p class="intro">Choose files and a password to create a downloadable <code>data.json</code> for the viewer.</p>
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">Create encrypted data</h2>
+      <form id="encoder-form">
+        <label for="files">Files</label>
+        <input id="files" name="files" type="file" multiple required>
+        <p class="hint">Any file type is supported. Multiple files are encrypted together in one export.</p>
+
+        <label for="password">Encryption password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required>
+        <p class="hint">Use a long, unique password. It cannot be recovered if you lose it.</p>
+
+        <button id="submit" type="submit">Encrypt and download data.json</button>
+      </form>
+      <p class="privacy">GitHub Pages is public hosting: anyone can download this JSON. File contents are encrypted in your browser, but filenames and MIME types remain visible. Use a strong password and do not upload sensitive files unless you understand this metadata exposure.</p>
+      <p id="status" role="status" aria-live="polite"></p>
+    </section>
+    <p><a href="./index.html">Open the encrypted file viewer</a></p>
+  </main>
+  <script src="./crypto.js"></script>
+  <script>
+    const form = document.querySelector("#encoder-form");
+    const submitButton = document.querySelector("#submit");
+    const status = document.querySelector("#status");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      status.textContent = "";
+      status.removeAttribute("data-error");
+
+      if (!window.isSecureContext || !crypto.subtle) {
+        status.textContent = "Encryption requires a secure context, such as GitHub Pages or localhost.";
+        status.dataset.error = "true";
+        return;
+      }
+
+      const files = Array.from(document.querySelector("#files").files);
+      const password = document.querySelector("#password").value;
+      if (files.length === 0 || !password) {
+        status.textContent = "Choose at least one file and enter a password.";
+        status.dataset.error = "true";
+        return;
+      }
+
+      submitButton.disabled = true;
+      try {
+        const encryptedFiles = [];
+        for (const [index, file] of files.entries()) {
+          status.textContent = `Encrypting ${index + 1} of ${files.length}: ${file.name}`;
+          encryptedFiles.push({
+            id: `file-${index + 1}`,
+            ...await encryptFile(file, password),
+          });
+        }
+
+        const exportBlob = new Blob([JSON.stringify(encryptedFiles, null, 2)], {
+          type: "application/json",
+        });
+        const downloadUrl = URL.createObjectURL(exportBlob);
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = "data.json";
+        link.click();
+        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+        document.querySelector("#password").value = "";
+        status.textContent = `Encrypted ${files.length} file${files.length === 1 ? "" : "s"}. Replace encrypted-files/data.json with the downloaded file to publish them.`;
+      } catch (error) {
+        console.error("Could not encrypt files.", error);
+        status.textContent = "Encryption failed. Check that the selected files are readable and try again.";
+        status.dataset.error = "true";
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

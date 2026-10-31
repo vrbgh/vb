@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Encrypted file viewer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f5f7fb;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; padding: 48px 20px; }
+    main { width: min(100%, 960px); margin: 0 auto; }
+    a { color: #3156c9; }
+    .eyebrow { color: #52617a; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 10px 0; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: -.045em; }
+    .intro { color: #52617a; line-height: 1.65; }
+    #files { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin: 28px 0; }
+    .card, .preview { border: 1px solid #e0e5ef; border-radius: 18px; background: #fff; box-shadow: 0 12px 36px rgb(34 49 80 / 6%); }
+    .card { padding: 20px; }
+    .card h2 { overflow-wrap: anywhere; margin: 0 0 6px; font-size: 1.05rem; }
+    .meta { margin: 0; color: #61708a; font-size: .85rem; overflow-wrap: anywhere; }
+    label { display: block; margin: 18px 0 8px; font-size: .9rem; font-weight: 650; }
+    input { width: 100%; padding: 11px 12px; border: 1px solid #cbd3e1; border-radius: 10px; font: inherit; }
+    input:focus { border-color: #3156c9; outline: 3px solid rgb(49 86 201 / 15%); }
+    button { margin-top: 14px; padding: 11px 15px; border: 0; border-radius: 10px; background: #3156c9; color: #fff; cursor: pointer; font: inherit; font-weight: 700; }
+    button:disabled { cursor: wait; opacity: .65; }
+    .error { min-height: 1.4em; margin: 10px 0 0; color: #b42318; font-size: .88rem; }
+    #load-status { color: #52617a; }
+    .preview { margin-top: 24px; padding: clamp(16px, 4vw, 28px); overflow: hidden; }
+    .preview h2 { margin-top: 0; overflow-wrap: anywhere; }
+    .preview img, .preview iframe, .preview video { display: block; width: 100%; max-height: 75vh; border: 0; border-radius: 10px; object-fit: contain; background: #eef1f7; }
+    .preview iframe { height: min(75vh, 850px); }
+    .preview audio { width: 100%; }
+    pre { max-height: 70vh; margin: 0; padding: 16px; overflow: auto; border-radius: 10px; background: #f3f5fa; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .empty { grid-column: 1 / -1; padding: 24px; border: 1px dashed #cbd3e1; border-radius: 14px; color: #61708a; text-align: center; }
+    footer { margin-top: 32px; color: #61708a; font-size: .9rem; }
+    @media (max-width: 520px) { body { padding: 30px 16px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Private file vault</p>
+    <h1>Encrypted files</h1>
+    <p class="intro">Choose a file and enter its password to decrypt it in this browser. The password and decrypted contents are never sent to a server.</p>
+    <p id="load-status" role="status" aria-live="polite">Loading files…</p>
+    <section id="files" aria-label="Available encrypted files"></section>
+    <section id="preview" class="preview" hidden aria-live="polite"></section>
+    <footer><a href="./encoder.html">Encrypt files (admin tool)</a></footer>
+  </main>
+  <script src="./crypto.js"></script>
+  <script>
+    const fileList = document.querySelector("#files");
+    const loadStatus = document.querySelector("#load-status");
+    const preview = document.querySelector("#preview");
+    let activeObjectUrl;
+
+    function showError(element, message) {
+      element.textContent = message;
+    }
+
+    function clearPreview() {
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+        activeObjectUrl = undefined;
+      }
+      preview.replaceChildren();
+      preview.hidden = true;
+    }
+
+    function createPreview(file, bytes) {
+      clearPreview();
+      preview.hidden = false;
+      const heading = document.createElement("h2");
+      heading.textContent = file.name;
+      preview.append(heading);
+
+      const blob = new Blob([bytes], { type: file.mimeType });
+      activeObjectUrl = URL.createObjectURL(blob);
+      let content;
+
+      if (file.mimeType.startsWith("image/")) {
+        content = document.createElement("img");
+        content.alt = file.name;
+        content.src = activeObjectUrl;
+      } else if (file.mimeType === "application/pdf") {
+        content = document.createElement("iframe");
+        content.title = file.name;
+        content.src = activeObjectUrl;
+        content.referrerPolicy = "no-referrer";
+      } else if (file.mimeType === "text/plain" || file.mimeType.startsWith("text/")) {
+        content = document.createElement("pre");
+        content.textContent = new TextDecoder().decode(bytes);
+      } else if (file.mimeType.startsWith("audio/")) {
+        content = document.createElement("audio");
+        content.controls = true;
+        content.src = activeObjectUrl;
+      } else if (file.mimeType.startsWith("video/")) {
+        content = document.createElement("video");
+        content.controls = true;
+        content.src = activeObjectUrl;
+      } else {
+        content = document.createElement("a");
+        content.href = activeObjectUrl;
+        content.download = file.name;
+        content.textContent = "Download Decrypted File";
+        content.className = "download";
+      }
+      preview.append(content);
+    }
+
+    function renderFileCard(file) {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const heading = document.createElement("h2");
+      heading.textContent = file.name;
+      const metadata = document.createElement("p");
+      metadata.className = "meta";
+      metadata.textContent = file.mimeType;
+      const form = document.createElement("form");
+      const label = document.createElement("label");
+      const password = document.createElement("input");
+      const button = document.createElement("button");
+      const error = document.createElement("p");
+
+      label.textContent = "Password";
+      password.type = "password";
+      password.autocomplete = "current-password";
+      password.required = true;
+      password.setAttribute("aria-label", `Password for ${file.name}`);
+      button.type = "submit";
+      button.textContent = "Decrypt and open";
+      error.className = "error";
+      error.setAttribute("role", "alert");
+      form.append(label, password, button, error);
+      card.append(heading, metadata, form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        showError(error, "");
+        button.disabled = true;
+        try {
+          if (!window.isSecureContext || !crypto.subtle) {
+            throw new Error("This viewer requires a secure context, such as GitHub Pages or localhost.");
+          }
+          const bytes = await decryptFile(file, password.value);
+          createPreview(file, bytes);
+          password.value = "";
+          preview.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (reason) {
+          showError(error, reason instanceof Error && reason.message.includes("secure context")
+            ? reason.message
+            : "Could not decrypt this file. The password may be incorrect, or the encrypted data may be damaged.");
+        } finally {
+          button.disabled = false;
+        }
+      });
+      return card;
+    }
+
+    async function loadFiles() {
+      try {
+        const response = await fetch("./data.json", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error(`Could not load data.json (${response.status}).`);
+        }
+        const files = await response.json();
+        if (!Array.isArray(files)) {
+          throw new Error("data.json must contain an array of encrypted file objects.");
+        }
+
+        const validFiles = files.filter((file) =>
+          file && typeof file.id === "string" &&
+          typeof file.name === "string" &&
+          typeof file.mimeType === "string" &&
+          typeof file.salt === "string" &&
+          typeof file.iv === "string" &&
+          typeof file.ciphertext === "string");
+        if (validFiles.length !== files.length) {
+          throw new Error("data.json contains an invalid encrypted file object.");
+        }
+        if (files.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "empty";
+          empty.textContent = "No encrypted files are published yet.";
+          fileList.append(empty);
+        } else {
+          fileList.append(...files.map(renderFileCard));
+        }
+        loadStatus.textContent = `${files.length} encrypted file${files.length === 1 ? "" : "s"} available.`;
+      } catch (error) {
+        loadStatus.textContent = error instanceof Error ? error.message : "Could not load encrypted files.";
+      }
+    }
+
+    window.addEventListener("pagehide", clearPreview);
+    loadFiles();
+  </script>
+</body>
+</html>

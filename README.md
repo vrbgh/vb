@@ -33,6 +33,22 @@ Change the matching file in `data/`, commit, done.
 
 Order on the page is the order in the file.
 
+## Encrypted file viewer
+
+The optional client-side encrypted-file viewer lives in `encrypted-files/` and is published at
+`/vb/encrypted-files/` on GitHub Pages. Use `encrypted-files/encoder.html` to encrypt one or more
+files and download a `data.json` file, then replace `encrypted-files/data.json` with that export
+and publish the change. The viewer uses the Web Crypto API (PBKDF2/SHA-256 with 100,000
+iterations and AES-GCM-256); it needs HTTPS or localhost.
+
+`data.json` is a JSON array with one object per file: `id`, `name`, `mimeType`, `salt`, `iv`,
+and `ciphertext`. The salt, IV, and ciphertext are Base64-encoded; the name and MIME type are
+plain text so the viewer can list files before decryption.
+
+The JSON is public, so filenames and MIME types are visible even though file contents are
+encrypted. Anyone with the JSON can try passwords offline; choose a strong, unique password.
+Passwords and decrypted file contents are processed locally and are not uploaded by these pages.
+
 ## Preview locally
 
 Browsers block `fetch` on `file://`, so serve the folder:
